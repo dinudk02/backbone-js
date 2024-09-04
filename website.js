@@ -43,13 +43,11 @@ var BlogView = Backbone.View.extend({
         this.$('.title').html('<input type="text" class="form-control title-update" value="' + title + '">');
         this.$('.url').html('<input type="text" class="form-control url-update" value="' + url + '">');
     },
-    update: function() {
-        this.model.set({
-            author: this.$('.author-update').val(),
-            title: this.$('.title-update').val(),
-            url: this.$('.url-update').val()
-        });
-    },
+    update: function(){
+		this.model.set({'author':this.$('.author-update').val(),
+			'title':this.$('.title-update').val(),
+			'url':this.$('.url-update').val()});
+	},
     cancel: function() {
         this.render();
     },
