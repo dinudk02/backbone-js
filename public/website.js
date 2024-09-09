@@ -4,11 +4,13 @@ var Blog = Backbone.Model.extend({
         author: '',
         title: '',
         url: ''
-    }
+    },
+    urlRoot: 'http://localhost:3000/api/blogs' // Define where the POST request should go
 });
 
 // Collection
 var BlogsCollection = Backbone.Collection.extend({
+    model: Blog,
     url: 'http://localhost:3000/api/blogs'
 });
 
@@ -93,11 +95,22 @@ $(document).ready(function() {
             title: $('.title-input').val(),
             url: $('.url-input').val()
         });
+
+        // Clear the form inputs
         $('.author-input').val('');
         $('.title-input').val('');
         $('.url-input').val('');
-        blogs.add(blog);
-        blog.save(); // Save the new blog to the server
+
+        // Save the new blog to the server
+        blog.save(null, {
+            success: function(model, response) {
+                console.log('Blog saved successfully:', response);
+                blogs.add(model); // Add the saved blog to the collection
+            },
+            error: function(model, response) {
+                console.error('Error saving blog:', response);
+            }
+        });
     });
 
     blogsView.render();
