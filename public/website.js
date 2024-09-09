@@ -5,13 +5,14 @@ var Blog = Backbone.Model.extend({
         title: '',
         url: ''
     },
-    urlRoot: 'http://localhost:3000/api/blogs' // Define where the POST request should go
+    urlRoot: '/api/blogs',  // Define the API endpoint for individual models
+    idAttribute: '_id'      // MongoDB uses _id as the identifier
 });
 
 // Collection
 var BlogsCollection = Backbone.Collection.extend({
-    model: Blog,
-    url: 'http://localhost:3000/api/blogs'
+    url: '/api/blogs',
+    model: Blog
 });
 
 // Instantiate collection
@@ -24,13 +25,13 @@ var BlogView = Backbone.View.extend({
     initialize: function() {
         this.template = _.template($('#blogs-list-template').html());
         this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.model, 'destroy', this.remove);
+        this.listenTo(this.model, 'destroy', this.remove);  // Listen for destroy event to remove the view
     },
     events: {
         'click .edit-blog': 'edit',
         'click .update-blog': 'update',
         'click .cancel-blog': 'cancel',
-        'click .delete-blog': 'delete'
+        'click .delete-blog': 'deleteBlog'
     },
     edit: function() {
         this.$('.edit-blog').hide();
@@ -57,8 +58,15 @@ var BlogView = Backbone.View.extend({
     cancel: function() {
         this.render();
     },
-    delete: function() {
-        this.model.destroy();
+    deleteBlog: function() {
+        this.model.destroy({
+            success: function() {
+                console.log('Blog deleted successfully');
+            },
+            error: function(model, response) {
+                console.error('Error deleting blog:', response);
+            }
+        });
     },
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
@@ -95,12 +103,9 @@ $(document).ready(function() {
             title: $('.title-input').val(),
             url: $('.url-input').val()
         });
-
-        // Clear the form inputs
         $('.author-input').val('');
         $('.title-input').val('');
         $('.url-input').val('');
-
         // Save the new blog to the server
         blog.save(null, {
             success: function(model, response) {
