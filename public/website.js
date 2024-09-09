@@ -8,7 +8,9 @@ var Blog = Backbone.Model.extend({
 });
 
 // Collection
-var BlogsCollection = Backbone.Collection.extend({});
+var BlogsCollection = Backbone.Collection.extend({
+    url: 'http://localhost:3000/api/blogs'
+});
 
 // Instantiate collection
 var blogs = new BlogsCollection();
@@ -20,14 +22,13 @@ var BlogView = Backbone.View.extend({
     initialize: function() {
         this.template = _.template($('#blogs-list-template').html());
         this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.model,'destroy',this.remove);
+        this.listenTo(this.model, 'destroy', this.remove);
     },
     events: {
         'click .edit-blog': 'edit',
         'click .update-blog': 'update',
         'click .cancel-blog': 'cancel',
         'click .delete-blog': 'delete'
-
     },
     edit: function() {
         this.$('.edit-blog').hide();
@@ -43,11 +44,14 @@ var BlogView = Backbone.View.extend({
         this.$('.title').html('<input type="text" class="form-control title-update" value="' + title + '">');
         this.$('.url').html('<input type="text" class="form-control url-update" value="' + url + '">');
     },
-    update: function(){
-		this.model.set({'author':this.$('.author-update').val(),
-			'title':this.$('.title-update').val(),
-			'url':this.$('.url-update').val()});
-	},
+    update: function() {
+        this.model.set({
+            'author': this.$('.author-update').val(),
+            'title': this.$('.title-update').val(),
+            'url': this.$('.url-update').val()
+        });
+        this.model.save();
+    },
     cancel: function() {
         this.render();
     },
@@ -66,6 +70,8 @@ var BlogsView = Backbone.View.extend({
     el: $('.blogs-list'),
     initialize: function() {
         this.listenTo(this.model, 'add', this.render);
+        this.listenTo(this.model, 'reset', this.render); // Added to listen to reset after fetching
+        this.model.fetch(); // Fetch data from the server
     },
     render: function() {
         var self = this;
@@ -85,12 +91,13 @@ $(document).ready(function() {
         var blog = new Blog({
             author: $('.author-input').val(),
             title: $('.title-input').val(),
-            url: $('.url-input').val(),
+            url: $('.url-input').val()
         });
         $('.author-input').val('');
         $('.title-input').val('');
         $('.url-input').val('');
         blogs.add(blog);
+        blog.save(); // Save the new blog to the server
     });
 
     blogsView.render();

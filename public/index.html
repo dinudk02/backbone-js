@@ -1,50 +1,49 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <!-- Link Bootstrap CSS -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <title>Backbone.js Learning</title>
-    </head>
-    <body>
-        <div class="container text-center"> <!-- Add text-center class here -->
-            <h1>Backbone js learning</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Author</th>
-                        <th>Title</th>
-                        <th>Url</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr>
-                        <td><input class="form-control author-input"> </td>
-                        <td><input class="form-control title-input"> </td>
-                        <td><input class="form-control url-input"> </td>
-                        <td><button class="btn btn-primary add-blog"> Add</button></td>
-                        
-                    </tr>
-                    <tbody class = "blogs-list"></tbody>
-                </thead>
-            </table>
-        </div>
-        <script type="text/template" id="blogs-list-template">
-            <td><span class="author"><%= author %></span></td>
-            <td><span class="title"><%= title %></span></td>
-            <td><span class="url"><%= url %></span></td>
-            <td>
-                <button class="btn btn-warning edit-blog">Edit</button>
-                <button class="btn btn-danger delete-blog">Delete</button>
-                <button class="btn btn-success update-blog" style="display:none">Update</button>
-                <button class="btn btn-danger cancel-blog" style="display:none">Cancel</button>
-            </td>
-        </script>
-        
+<html lang="en">
+<head>
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>Backbone.js Learning</title>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>Backbone.js Learning</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Url</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td><input class="form-control author-input"> </td>
+                    <td><input class="form-control title-input"> </td>
+                    <td><input class="form-control url-input"> </td>
+                    <td><button class="btn btn-primary add-blog">Add</button></td>
+                </tr>
+            </thead>
+            <tbody class="blogs-list"></tbody>
+        </table>
+    </div>
 
-        </script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" type="text/javascript"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js" type="text/javascript"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.6.0/backbone-min.js" type="text/javascript"></script>
-        <!-- change the file name which you are running  -->
-        <script src="website.js"></script>
-    </body>
+    <!-- Blog template for rendering each blog -->
+    <script type="text/template" id="blogs-list-template">
+        <td><span class="author"><%= author %></span></td>
+        <td><span class="title"><%= title %></span></td>
+        <td><span class="url"><%= url %></span></td>
+        <td>
+            <button class="btn btn-warning edit-blog">Edit</button>
+            <button class="btn btn-danger delete-blog">Delete</button>
+            <button class="btn btn-success update-blog" style="display:none">Update</button>
+            <button class="btn btn-danger cancel-blog" style="display:none">Cancel</button>
+        </td>
+    </script>
+
+    <!-- Include required libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.6.0/backbone-min.js"></script>
+    <script src="website.js"></script>
+</body>
 </html>
