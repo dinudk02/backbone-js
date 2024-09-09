@@ -19,6 +19,7 @@ var BlogsCollection = Backbone.Collection.extend({
 var blogs = new BlogsCollection();
 
 // Backbone view for a single blog
+// Backbone view for a single blog
 var BlogView = Backbone.View.extend({
     model: new Blog(),
     tagName: 'tr',
@@ -48,14 +49,31 @@ var BlogView = Backbone.View.extend({
         this.$('.url').html('<input type="text" class="form-control url-update" value="' + url + '">');
     },
     update: function() {
+        // Update the model with new values
         this.model.set({
             'author': this.$('.author-update').val(),
             'title': this.$('.title-update').val(),
             'url': this.$('.url-update').val()
         });
-        this.model.save();
+
+        // Save the updated model (triggers PUT request)
+        this.model.save(null, {
+            success: function(model, response) {
+                console.log('Blog updated successfully:', response);
+            },
+            error: function(model, response) {
+                console.error('Error updating blog:', response);
+            }
+        });
+
+        // Hide the edit buttons and show the delete/edit buttons again
+        this.$('.edit-blog').show();
+        this.$('.delete-blog').show();
+        this.$('.update-blog').hide();
+        this.$('.cancel-blog').hide();
     },
     cancel: function() {
+        // Re-render the view to cancel the edit mode
         this.render();
     },
     deleteBlog: function() {

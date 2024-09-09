@@ -78,5 +78,26 @@ app.delete('/api/blogs/:id', function(req, res) {
   });
 });
 
+// API to update an existing blog (PUT)
+app.put('/api/blogs/:id', function(req, res) {
+  Blog.findByIdAndUpdate(req.params.id, {
+    author: req.body.author,
+    title: req.body.title,
+    url: req.body.url
+  }, { new: true }) // `new: true` returns the updated document
+    .then(function(updatedBlog) {
+      if (!updatedBlog) {
+        return res.status(404).send('Blog not found');
+      }
+      console.log('Blog updated successfully:', updatedBlog);
+      res.status(200).send(updatedBlog);
+    })
+    .catch(function(err) {
+      console.error('Error updating blog:', err);
+      res.status(500).send('Error updating blog');
+    });
+});
+
+
 var port = 3000;
 app.listen(port, () => console.log('Server running on port ' + port));
